@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="MicroStudent"><title>在Github上部署Hexo博客 · MicroStudent的博客</title><meta name="description" content="为什么从jekyll-now换成hexo事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到2016年5月1号将只支持kramdown引擎，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换"><meta name="keywords" content="Android,Hexo"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">MicroStudent的博客</a></h3><div class="description"><p>I love learning.</p></div></div></div><ul class="social-links"><li><a href="http://weibo.com/1572542140"><i class="fa fa-weibo"></i></a></li><li><a href="http://github.com/microstudent"><i class="fa fa-github"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/assets/images/avatar.jpg"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>在Github上部署Hexo博客</a></h3></div><div class="post-content"><h3 id="为什么从jekyll-now换成hexo"><a href="#为什么从jekyll-now换成hexo" class="headerlink" title="为什么从jekyll-now换成hexo"></a>为什么从<a href="https://github.com/barryclark/jekyll-now" target="_blank" rel="noopener">jekyll-now</a>换成<a href="https://hexo.io" target="_blank" rel="noopener">hexo</a></h3><p>事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到<a href="https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0" target="_blank" rel="noopener">2016年5月1号将只支持kramdown引擎</a>，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)<br><a id="more"></a></p>
+<hr>
+<h3 id="Hexo好处都有啥？"><a href="#Hexo好处都有啥？" class="headerlink" title="Hexo好处都有啥？"></a>Hexo好处都有啥？</h3><p>经过这几天的体验，发现Hexo比之前的jekyll-now有以下的好处：</p>
+<ol>
+<li>有众多主题可供选择（例如你现在看到的这个）</li>
+<li>插件繁多，通过插件可以在开启自己的server，预览效果，也可以通过命令行一次性部署到远端服务器(Github、Heroku等)</li>
+<li>有草稿机制，可以先写草稿再发布出去</li>
+<li>有源源不断的开发者对Hexo更新<br>虽然jekyll-now可以做到快速建站，但是在自定义这方面却完全输给了Hexo。</li>
+</ol>
+<hr>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><p>想要使用Hexo来搭建自己的博客，首先你要安装<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>和<a href="http://git-scm.com/" target="_blank" rel="noopener">Git</a>，Windows用户建议在官网直接下载安装包进行安装，比较省事。<br>当你安装完这两个东西之后，打开命令行(cmd)输入以下命令安装hexo在你的电脑上。</p>
+<blockquote>
+<p>$ npm install -g hexo-cli</p>
+</blockquote>
+<p>稍等片刻，hexo即安装成功。</p>
+<h3 id="部署到Github"><a href="#部署到Github" class="headerlink" title="部署到Github"></a>部署到Github</h3><p>一旦Hexo安装成功，你就可以在命令行中输入以下命令开始初始化你的博客系统。</p>
+<pre><code>$ hexo init &lt;folder&gt;
+$ cd &lt;folder&gt;
+$ npm install
+</code></pre><p>其中，<folder>替换成你的想要存放的Hexo博客目录。如d:/hexo。</folder></p>
+<blockquote>
+<p>如果遇到cd命令无效的问题，可以加强制跳转命令”/d”，例如：cd /d d:/hexo</p>
+</blockquote>
+<blockquote>
+<p>在执行这些命令之前你最好检查系统环境变量Path是否包含了git的主目录。因为init命令依靠的是git的clone实现，如果git在环境变量中没有配置好，将会以复制文件的方式替代。</p>
+</blockquote>
+<blockquote>
+<p>需要说明的是，如果你是使用git的安装包形式安装的，在安装过程中有选项可以选择自动导入环境变量！</p>
+</blockquote>
+<p>在初始化完成后，你将在<folder>目录看到如下的目录结构：</folder></p>
+<blockquote>
+<p>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes</p>
+</blockquote>
+<p>其中，_config.yml是主要的配置文件，在里面可以修改站点的信息。</p>
+<blockquote>
+<p>最好使用Sublime text之类代码编辑器打开这个文件，而不要使用记事本打开，因为记事本可能会加入某些特殊字符导致修改异常</p>
+</blockquote>
+<p>source文件夹存放的是你用markdown存放的博文或者页面，里面有_post(博文)等其他文件夹，还可能有assets\images文件夹，里面存放公共图片资源等。</p>
+<p>theme文件夹则是存放着你的博客主题资源，你可以在<a href="https://hexo.io/themes/" target="_blank" rel="noopener">这里</a>找到适合你的主题并应用到你的博客上去！</p>
+<h3 id="config-yml配置说明"><a href="#config-yml配置说明" class="headerlink" title="_config.yml配置说明"></a>_config.yml配置说明</h3><p>直接用文本编辑器打开_config.yml，建议修改以下变量：</p>
+<ul>
+<li>title 你博客的主标题</li>
+<li>subtitle 你博客的副标题</li>
+<li>description 你博客的描述</li>
+<li>author 作者名</li>
+<li>language 使用的语言，简体中文就输入zh-cn</li>
+<li>per_page 一页展示的文章数量，0表示不分页</li>
+<li>theme 博客使用的主题，false表示不使用主题</li>
+<li>deploy 一键部署的属性</li>
+</ul>
+<h3 id="配置一键部署到github"><a href="#配置一键部署到github" class="headerlink" title="配置一键部署到github"></a>配置一键部署到github</h3><p>首先登录github并新建一个新的respository，名字格式为&lt;你的github账户名&gt;.github.io，例如microstudent.github.io，然后复制其SSH形式的clone urls，例如：<a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:microstudent/microstudent.github.io.git。</p>
+<p>接着运行命令行，输入</p>
+<pre><code>$ npm install hexo-deployer-git --save
+</code></pre><p>安装hexo-deployer-git，hexo将一键部署组件分解成了许多模块，这是部署到git类服务器的模块。</p>
+<p>在_config.yml，修改deploy属性如下：</p>
+<pre><code>deploy:
+    type: git
+    repo: &lt;repository url&gt;
+    branch: master
+</code></pre><p>其中，&lt; repository url&gt;替换成刚才复制的clone urls。</p>
+<p>然后就是见证奇迹的时刻了。</p>
+<p>在命令行中用cd命令进入hexo的目录，输入</p>
+<pre><code>hexo g -d
+</code></pre><p>这之中包含了两层命令，第一层是hexo generate，生成博客页面，附带一个-d指的是生成后直接部署（hexo deploy<br>），然后打开&lt; yourusername&gt;.github.io，如果没有出现error404就说明部署成功！</p>
+<h3 id="开启本地服务器"><a href="#开启本地服务器" class="headerlink" title="开启本地服务器"></a>开启本地服务器</h3><p>你可以在本地开启一个服务器浏览博客。首先命令行进入hexo的目录，然后输入</p>
+<pre><code>$ hexo server
+</code></pre><p>然后打开浏览器输入：<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 即为博客的效果。</p>
+<h3 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h3><p>你可以在hexo目录下执行</p>
+<pre><code>$ hexo new &lt;title&gt;
+</code></pre><p>创建新文章，&lt; title&gt;替换为文章标题。<br>然后在source/_post下找到生成的md文件，在这个文件上即可开始自己的写作！</p>
+<h3 id="一些可能你会遇到的问题"><a href="#一些可能你会遇到的问题" class="headerlink" title="一些可能你会遇到的问题"></a>一些可能你会遇到的问题</h3><ol>
+<li>错误1：<br>fatal: Could not read from remote repository.<br>Please make sure you have the correct access rights<br>and the repository exists.<br>除了提示消息本身的原因之外，请检查你安装的Git用的SSH key是否过期或者失效，如果不能确定最好重新生成一个并在github上设置权限。</li>
+<li><p>错误2：<br>deploy deployer not found: github<br>3.0后的版本，Hexo需要将type设置成git并且使用<br>$ npm install hexo-deployer-git –save<br>安装对应的插件，才能上传。</p>
+</li>
+<li><p>错误3：<br>deploy deployer not found: git<br>这个文件很可能是因为你没有正确安装好hexo-deployer-git这个模块，建议卸载后使用  $ npm install hexo-deployer-git –save命令重新安装</p>
+</li>
+<li>错误4：在部署过程中出现乱码，并且部署失败。<br>很可能因为你的git配置不正确，建议卸载git/github for windows后重新安装最新版本，而且最好不要同时安装git和github for windows。</li>
+<li>错误5：在部署过程中异常报错。<br>请检查你的_config.yml文件是否填写正确，在每个变量后的冒号都要有一个空格，否则会识别错误！同时据说在里面输入中文字符也可能会导致这个问题，不过我尝试了之后并没有出现这个问题，这很可能是编码的问题，使用UTF编码应该就没问题了。</li>
+</ol>
+<h3 id="还有问题？"><a href="#还有问题？" class="headerlink" title="还有问题？"></a>还有问题？</h3><p>如果你觉得介绍不够详细，或者是还有很多疑问没有解决，那么你可以登录hexo官网查看相关文档<a href="https://hexo.io/docs/" target="_blank" rel="noopener">https://hexo.io/docs/</a>  。部分页面已经有简中版了！</p>
+<h3 id="关于渲染错误的问题"><a href="#关于渲染错误的问题" class="headerlink" title="关于渲染错误的问题"></a>关于渲染错误的问题</h3><p>为什么升级了markdown引擎后网页显示不正确了呢？<br>其实是因为语法有差异。<br>新的markdown引擎要求在标题符号#后加一个空格，否则就不能正常识别成一个标题，o(╯□╰)o。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-03-03</span><i class="fa fa-tag"></i><a class="tag" href="/tags/hexo/" title="hexo">hexo </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://microstudent.github.io/2016/03/03/hexo/,MicroStudent的博客,在Github上部署Hexo博客,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/03/04/java-1/" title="学习笔记（一）之Java强引用、弱引用、虚引用、软引用">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/01/12/cacw-3/" title="CACW开发笔记（二）：自定义View，实现载入动画！——后篇">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

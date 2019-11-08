@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="MicroStudent"><title>CACW开发笔记（一）：关于Android4.4以上实现透明状态栏 · MicroStudent的博客</title><meta name="description" content="开坑啦！首先简单介绍一下什么是CACW。
+CACW是我当前正在开发的一款Android应用的代号，中文名是蚂蚁团队，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material des"><meta name="keywords" content="Android,Hexo"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">MicroStudent的博客</a></h3><div class="description"><p>I love learning.</p></div></div></div><ul class="social-links"><li><a href="http://weibo.com/1572542140"><i class="fa fa-weibo"></i></a></li><li><a href="http://github.com/microstudent"><i class="fa fa-github"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/assets/images/avatar.jpg"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>CACW开发笔记（一）：关于Android4.4以上实现透明状态栏</a></h3></div><div class="post-content"><h2 id="开坑啦！"><a href="#开坑啦！" class="headerlink" title="开坑啦！"></a>开坑啦！</h2><p>首先简单介绍一下什么是CACW。</p>
+<p>CACW是我当前正在开发的一款Android应用的代号，中文名是<strong>蚂蚁团队</strong>，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material design设计风格进行设计。为了记录下我在开发这款应用时踩到的各种坑，我将会在以后不定时的更新这应用的开发进度。<br><a id="more"></a><br>目前这款应用开发进度大概是30%左右，首先来说说今天的主题吧————<strong>Android状态栏透明</strong>。</p>
+<p>首先先上一下最终效果图：<br><img src="http://img-storage.qiniudn.com/15-11-4/25804636.jpg" alt=""></p>
+<h2 id="Material-design设计规范对状态栏的推荐标准"><a href="#Material-design设计规范对状态栏的推荐标准" class="headerlink" title="Material design设计规范对状态栏的推荐标准"></a>Material design设计规范对状态栏的推荐标准</h2><p>根据<a href="https://www.google.com/design/spec/style/color.html#color-ui-color-application" target="_blank" rel="noopener">Google官方文档</a>，状态栏的颜色应该是colorPrimaryDark，或者是透明度为20%的黑色半透明遮罩。</p>
+<p><img src="http://img-storage.qiniudn.com/15-11-5/50877279.jpg" alt=""></p>
+<p>但是问题在于那个20%的半透明可能没那么简单，因为半透明状态栏在android4.4(v19)以上才能实现，而如果使用不恰当就会有各种问题。例如<a href="http://www.zhihu.com/question/30804539" target="_blank" rel="noopener">EidtText光标不会随着软键盘的弹出而自动上浮，挡住了EditText</a>。</p>
+<h3 id="存在的障碍"><a href="#存在的障碍" class="headerlink" title="存在的障碍"></a>存在的障碍</h3><p>此前，针对4.4状态栏透明的做法一般是设置windowTranslucentStatus = true，这样布局将会忽略状态栏，将内容往上顶，toobar就会和statusbar重叠，因此在放置toolbar的时候需要设置margin，或者在状态栏的位置放置一个View来恢复正常的布局。这样又涉及到了计算statusbar高度的问题。</p>
+<blockquote>
+<p>statusbar的高度为25dp（最新的android 6.0是24dp）</p>
+</blockquote>
+<p>但是在android5.x上如果照搬4.4的解决方案其实并不合理，原因在于TranslucentStatus在5.x以上的表现不同，遮罩层颜色过深，不太符合Material Design的标准。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>经过一番搜索，我在<a href="http://www.zhihu.com/question/31468556" target="_blank" rel="noopener">这里</a>找到了可以解决问题的答案。</p>
+<blockquote>
+<p>如果不需要支持 4.4，建议直接使用 statusBarColor</p>
+</blockquote>
+<blockquote>
+<p>如果需要支持 4.4，建议 4.4 使用 windowTranslucentStatus；5.x 使用 statusBarColor/colorPrimaryDark</p>
+</blockquote>
+<h4 id="1-添加style"><a href="#1-添加style" class="headerlink" title="1. 添加style"></a>1. 添加style</h4><p>首先在sytle.xml里面定义半透明状态栏。分别新建v19和v21两个style，加入以下style：</p>
+<p>v19</p>
+<pre><code>&lt;style name=&quot;translucent_status&quot; parent=&quot;AppTheme&quot;&gt;
+     &lt;item name=&quot;android:windowTranslucentStatus&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>v21</p>
+<pre><code>&lt;style name=&quot;translucent_status&quot; parent=&quot;AppTheme&quot;&gt;
+    &lt;item name=&quot;android:statusBarColor&quot;&gt;#33000000&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><blockquote>
+<p>注意：因为android4.4以下没有透明状态栏的选项，因此在无修饰符的style.xml里面也要定义一个同名的style保证在低版本下运行不会因为找不到style而崩溃。</p>
+</blockquote>
+<h4 id="2-修改manifest"><a href="#2-修改manifest" class="headerlink" title="2.修改manifest"></a>2.修改manifest</h4><p>在manifest里面定义theme属性。</p>
+<pre><code>android:theme=&quot;@style/translucent_status&quot;
+</code></pre><h4 id="3-修改activity代码"><a href="#3-修改activity代码" class="headerlink" title="3.修改activity代码"></a>3.修改activity代码</h4><p>因为StatusBarColor并不会将布局上移，因此我们需要加上：</p>
+<pre><code>Window window = getActivity().getWindow();
+
+if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) {
+    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+}
+</code></pre><h4 id="4-修正toolbar位置"><a href="#4-修正toolbar位置" class="headerlink" title="4.修正toolbar位置"></a>4.修正toolbar位置</h4><p>因为布局上移了因此toolbar和statusbar会重叠，如果你是像我一样的懒人，你可以设置margin：</p>
+<p><code>&lt;item name=&quot;android:layout_marginTop&quot;&gt;@dimen/status_bar_height&lt;/item&gt;</code></p>
+<p>dimens.xml:</p>
+<p><code>&lt;dimen name=&quot;status_bar_height&quot;&gt;25dp&lt;/dimen&gt;</code></p>
+<p><em>(当然如果为了支持最新的android6.0你可能还需要新建一个v23版本的dimens，设置为24dp)</em></p>
+<p>你也可以选择在java里动态获取statusbar的高度（未验证）：</p>
+<pre><code>public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier(&quot;status_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;);
+        if (resourceId &gt; 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+</code></pre><h4 id="5-添加-fitsSystemWindow-”true”（可选）"><a href="#5-添加-fitsSystemWindow-”true”（可选）" class="headerlink" title="5.添加 fitsSystemWindow=”true”（可选）"></a>5.添加 fitsSystemWindow=”true”（可选）</h4><p>因为android4.4的方案可能会导致EditText被软键盘挡住，因此如果有用到Edittext则需要在v19版本的布局文件根布局设置 fitsSystemWindow=”true”。</p>
+<blockquote>
+<p>需要注意的是，不要同时设置windowTranslucentNavigation，这样会导致上面的方案失效</p>
+</blockquote>
+<p><strong>这就是目前在android4.4以上实现透明状态栏的方案啦，希望能够对大家有帮助！</strong></p>
+<p><strong>下期节目再见。</strong></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2015-11-05</span><i class="fa fa-tag"></i><a class="tag" href="/tags/cacw/" title="cacw">cacw </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://microstudent.github.io/2015/11/05/cacw-1/,MicroStudent的博客,CACW开发笔记（一）：关于Android4.4以上实现透明状态栏,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2015/11/12/cacw-2/" title="CACW开发笔记（二）：自定义View，实现载入动画！——前篇">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2015/11/04/Mrakdown/" title="教你怎么使用Markdown在Windows上愉快地写博文">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
