@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LeavesGeek的博客 - 你知道的与不知道的</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="I love learning.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LeavesGeek的博客">
+<meta property="og:url" content="http://microstudent.github.io/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="I love learning.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="Android,Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "LeavesGeek的博客",
+  "alternateName": [
+    "你知道的与不知道的",
+    "microstudent.github.io"
+  ],
+  "url": "http://microstudent.github.io/"
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LeavesGeek的博客',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a></span><div id="menus"></div></nav><h1 class="title-seo">LeavesGeek的博客</h1></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></span></div><div class="content">0x01 起因商店每次发布新版本之后，崩溃统计平台排行第一的总是一个奇怪的ANR，他的主线程卡在了这里： 1234567891011121314151617181920212223242526272829DALVIK THREADS (108):&quot;main&quot; prio=5 tid=1 Waiting  | group=&quot;main&quot; sCount=1 d...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></span></div><div class="content">0x01 什么是AOP？怎么使用Systrace？AOP意即面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。我在Android上使用AOP主要是为了做性能检测，Systrace默认没有针对所有方法进行跟踪，如果需要针对特殊方法进行跟踪，那么需要在java代码里面插入begin和endTrace等方法。这样不仅破坏了原有代码结构，而且难以对所有方法做追踪。Aspe...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></span></div><div class="content">最近准备面试，想把一些面试过程中遇到的问题记录下来，以便自己以后可以总结经验。 0x01 18年8月8日电话面试这次面试暴露了我准备不充分的问题，面试官很有水平，会针对我的简历提出一些我意想不到的问题。  你的简历上写了“一个硬核技术Boy”，如何理解“硬核”这两个字？ 听你介绍，你的工作主要是对性能进行优化，那么你是如何进行性能优化的呢？ 你把一些主要的方法论的问题都说了，但是有没有一种一...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></span></div><div class="content">好久不见，Glide和Picasso都是目前网络上比较常见的一些图片加载框架，下面就他们的一些差异和优缺点进行分析。本文主要讲述以下几点：  图片加载API的区别 图片的缓存策略区别 互相的优劣势 本文对比的是Picasso2.5.2和Glide3.7.0      0x01图片加载API的区别 对于最普通的Url加载图片到ImageView中，两者的写法分别是    Glide： 1234...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></span></div><div class="content">最近在知乎上关注了这个问题：Android 开发中，有哪些坑需要注意？ 里面有许多Android开发大神所讲的各种小点，对我来说非常有帮助。我在开发过程中有时候也会遇到一些小坑，因此在这里也贴一下。（也许就是自己用错了？（笑:)）   - 自定义View 由于没对Painter设置线条Width，导致在canvas里面drawLine()没有显示效果（也可能是因为屏幕dpi太高？） surf...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/06/01/rxjava-1/" title="RxJava使用小记录">RxJava使用小记录</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></span></div><div class="content">写在前面这几天在看技术博客的时候，看到了经常出现的rxjava教程。因为自己之前比较浮躁，因此都没有时间静下心来仔细看，这次终于比较完整的把这篇文章看完了，于是打算在以后的项目中，尝试着使用RxJava进行开发，学习它那种“流水线”式的开发方式。我尝试了RxJava和Retrofit的结合，目前看起来效果还不错。继续加油！随着我对Rxjava的使用，这篇文章会慢慢补充。算不上什么正式的文章，...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/05/29/translate-1/" title="翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)">翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-05-29T13:30:48.000Z" title="发表于 2016-05-29 21:30:48">2016-05-29</time></span></div><div class="content">refer:http://blog.danlew.net/2014/11/19/styles-on-android/ 我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？   在Android平台上开发了多年之后，我有一些关于如何正确使用style的强烈建议...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/05/29/ninekeyquery/" title="实现一个简单的九键拼音匹配算法(比较随性)">实现一个简单的九键拼音匹配算法(比较随性)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-05-29T12:27:43.000Z" title="发表于 2016-05-29 20:27:43">2016-05-29</time></span></div><div class="content">好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：   需求是对拨号窗口的九键进行拼音筛选，需要设计一种算法来筛选条目。应用类似手机的通讯录。 方法给出的queryString为一串数字，通过拨号键盘给出的。也可能掺杂着#*等电话符号。假设User类有getPinyin()和get...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/03/04/java-1/" title="学习笔记（一）之Java强引用、弱引用、虚引用、软引用">学习笔记（一）之Java强引用、弱引用、虚引用、软引用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-03-04T13:48:28.000Z" title="发表于 2016-03-04 21:48:28">2016-03-04</time></span></div><div class="content">前言最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。    什么是强引用其实强引用在我们写Java代码非常常用，例如下面这一句语句就创建了一个强引用： Map&lt;String,String&gt; map = new Hashmap();  上面这个语句的作用是，创建一个Map对象，并且将其强引用至map上，这个引用是如此...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2016/03/03/hexo/" title="在Github上部署Hexo博客">在Github上部署Hexo博客</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2016-03-03T14:16:18.000Z" title="发表于 2016-03-03 22:16:18">2016-03-03</time></span></div><div class="content">为什么从jekyll-now换成hexo事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到2016年5月1号将只支持kramdown引擎，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)     Hexo好处都有啥...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/hexo/" style="font-size: 1.1em; color: #999">hexo</a> <a href="/tags/markdown/" style="font-size: 1.1em; color: #999">markdown</a> <a href="/tags/rxjava-retrofit/" style="font-size: 1.1em; color: #999">rxjava, retrofit</a> <a href="/tags/Android/" style="font-size: 1.1em; color: #999">Android</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 1.1em; color: #999">面试</a> <a href="/tags/java/" style="font-size: 1.1em; color: #999">java</a> <a href="/tags/SharedPreferences/" style="font-size: 1.1em; color: #999">SharedPreferences</a> <a href="/tags/cacw/" style="font-size: 1.5em; color: #99a9bf">cacw</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2018/09/">
+            <span class="card-archive-list-date">
+              九月 2018
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2018/08/">
+            <span class="card-archive-list-date">
+              八月 2018
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2017/01/">
+            <span class="card-archive-list-date">
+              一月 2017
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2016/06/">
+            <span class="card-archive-list-date">
+              六月 2016
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2016/05/">
+            <span class="card-archive-list-date">
+              五月 2016
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2016/03/">
+            <span class="card-archive-list-date">
+              三月 2016
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2016/01/">
+            <span class="card-archive-list-date">
+              一月 2016
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2015/11/">
+            <span class="card-archive-list-date">
+              十一月 2015
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div></div></body></html>

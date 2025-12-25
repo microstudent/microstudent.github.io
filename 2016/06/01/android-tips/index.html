@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Android的小笔记 | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近在知乎上关注了这个问题：Android 开发中，有哪些坑需要注意？ 里面有许多Android开发大神所讲的各种小点，对我来说非常有帮助。我在开发过程中有时候也会遇到一些小坑，因此在这里也贴一下。（也许就是自己用错了？（笑:)）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的小笔记">
+<meta property="og:url" content="http://microstudent.github.io/2016/06/01/android-tips/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="最近在知乎上关注了这个问题：Android 开发中，有哪些坑需要注意？ 里面有许多Android开发大神所讲的各种小点，对我来说非常有帮助。我在开发过程中有时候也会遇到一些小坑，因此在这里也贴一下。（也许就是自己用错了？（笑:)）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2016-06-01T07:51:05.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="Android,Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Android的小笔记",
+  "url": "http://microstudent.github.io/2016/06/01/android-tips/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2016-06-01T07:51:05.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2016/06/01/android-tips/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android的小笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Android的小笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Android的小笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><p>最近在知乎上关注了这个问题：<a href="https://www.zhihu.com/question/27818921">Android 开发中，有哪些坑需要注意？</a></p>
+<p>里面有许多Android开发大神所讲的各种小点，对我来说非常有帮助。我在开发过程中有时候也会遇到一些小坑，因此在这里也贴一下。（也许就是自己用错了？（笑:)）</p>
+<span id="more"></span>
+
+<h3 id="自定义View"><a href="#自定义View" class="headerlink" title="- 自定义View"></a>- 自定义View</h3><ul>
+<li>由于没对Painter设置线条Width，导致在canvas里面drawLine()没有显示效果（也可能是因为屏幕dpi太高？）</li>
+<li>surfaceView 每次拿到的canvas都不会清空,Path也是</li>
+<li>由于不理解贝塞尔曲线控制点的含义，导致在canvas里绘制贝塞尔曲线时一直画不出曲线（这个是自己的学得太少(⊙﹏⊙)b）</li>
+<li>在需要传context的时候，注意传的是哪个context，如果传的是ApplicationContext，则在在inflate的时候绘制出来的View会是系统默认样式，而在xml里定义的样式是无效的。</li>
+</ul>
+<p>关于不同Context能干什么请看下图：<img src="https://pic2.zhimg.com/9be7e8e2d05cd088fb79d22b211fdaad_b.png" alt="image"></p>
+<blockquote>
+<p>备注：大家注意看到有一些NO上添加了一些数字，其实这些从能力上来说是YES，但是为什么说是NO呢？下面一个一个解释：<br>1、数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task，一般情况不推荐；</p>
+<p>2、数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用；</p>
+<p>3、数字3：在Receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）；</p>
+<p>4、ContentProvider、BroadcastReceiver之所以在上述表格中，是因为在其内部方法中都有一个context用于使用。</p>
+<p>来自知乎<a href="https://www.zhihu.com/people/zhang-ming-yun-88">@张明云</a>的答案</p>
+</blockquote>
+<ul>
+<li>默认情况下Viewgroup 的onDraw方法不会被调用，除非设置willNowDraw为false</li>
+<li>RecyclerView.scrollToPosition()方法与LayoutManager.scrollToPositionWithOffset()方法的区别：如果在recyclerView里面调用scrollToPosition方法，则rv确实会滚动至该位置，但是这个方法只保证你要的position在可见范围内。但scrollToPositionWithOffset则保证了该position相对顶部有多少的offset，保证该position所在item相对Rv的位置。</li>
+<li>在android4.1.1里使用?accent这个颜色会报错（其他Android版本未实验）</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2016/06/01/android-tips/">http://microstudent.github.io/2016/06/01/android-tips/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2016/06/01/rxjava-1/" title="RxJava使用小记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">RxJava使用小记录</div></div><div class="info-2"><div class="info-item-1">写在前面这几天在看技术博客的时候，看到了经常出现的rxjava教程。因为自己之前比较浮躁，因此都没有时间静下心来仔细看，这次终于比较完整的把这篇文章看完了，于是打算在以后的项目中，尝试着使用RxJava进行开发，学习它那种“流水线”式的开发方式。我尝试了RxJava和Retrofit的结合，目前看起来效果还不错。继续加油！随着我对Rxjava的使用，这篇文章会慢慢补充。算不上什么正式的文章，...</div></div></div></a><a class="pagination-related" href="/2016/05/29/translate-1/" title="翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)</div></div><div class="info-2"><div class="info-item-1">refer:http://blog.danlew.net/2014/11/19/styles-on-android/ 我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？   在Android平台上开发了多年之后，我有一些关于如何正确使用style的强烈建议...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89View"><span class="toc-number">1.</span> <span class="toc-text">- 自定义View</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>

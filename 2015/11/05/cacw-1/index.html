@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CACW开发笔记（一）：关于Android4.4以上实现透明状态栏 | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="开坑啦！首先简单介绍一下什么是CACW。 CACW是我当前正在开发的一款Android应用的代号，中文名是蚂蚁团队，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material design设计风格进行设计。为了记录下我在开发这款应用时踩到的各种坑，我将会在以后不定时的更新这应用的开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CACW开发笔记（一）：关于Android4.4以上实现透明状态栏">
+<meta property="og:url" content="http://microstudent.github.io/2015/11/05/cacw-1/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="开坑啦！首先简单介绍一下什么是CACW。 CACW是我当前正在开发的一款Android应用的代号，中文名是蚂蚁团队，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material design设计风格进行设计。为了记录下我在开发这款应用时踩到的各种坑，我将会在以后不定时的更新这应用的开">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2015-11-05T12:27:43.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="cacw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CACW开发笔记（一）：关于Android4.4以上实现透明状态栏",
+  "url": "http://microstudent.github.io/2015/11/05/cacw-1/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2015-11-05T12:27:43.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2015/11/05/cacw-1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CACW开发笔记（一）：关于Android4.4以上实现透明状态栏',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">CACW开发笔记（一）：关于Android4.4以上实现透明状态栏</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">CACW开发笔记（一）：关于Android4.4以上实现透明状态栏</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2015-11-05T12:27:43.000Z" title="发表于 2015-11-05 20:27:43">2015-11-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><h2 id="开坑啦！"><a href="#开坑啦！" class="headerlink" title="开坑啦！"></a>开坑啦！</h2><p>首先简单介绍一下什么是CACW。</p>
+<p>CACW是我当前正在开发的一款Android应用的代号，中文名是<strong>蚂蚁团队</strong>，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material design设计风格进行设计。为了记录下我在开发这款应用时踩到的各种坑，我将会在以后不定时的更新这应用的开发进度。</p>
+<span id="more"></span>
+<p>目前这款应用开发进度大概是30%左右，首先来说说今天的主题吧————<strong>Android状态栏透明</strong>。</p>
+<p>首先先上一下最终效果图：<br><img src="http://img-storage.qiniudn.com/15-11-4/25804636.jpg"></p>
+<h2 id="Material-design设计规范对状态栏的推荐标准"><a href="#Material-design设计规范对状态栏的推荐标准" class="headerlink" title="Material design设计规范对状态栏的推荐标准"></a>Material design设计规范对状态栏的推荐标准</h2><p>根据<a href="https://www.google.com/design/spec/style/color.html#color-ui-color-application">Google官方文档</a>，状态栏的颜色应该是colorPrimaryDark，或者是透明度为20%的黑色半透明遮罩。</p>
+<p><img src="http://img-storage.qiniudn.com/15-11-5/50877279.jpg"></p>
+<p>但是问题在于那个20%的半透明可能没那么简单，因为半透明状态栏在android4.4(v19)以上才能实现，而如果使用不恰当就会有各种问题。例如<a href="http://www.zhihu.com/question/30804539">EidtText光标不会随着软键盘的弹出而自动上浮，挡住了EditText</a>。</p>
+<h3 id="存在的障碍"><a href="#存在的障碍" class="headerlink" title="存在的障碍"></a>存在的障碍</h3><p>此前，针对4.4状态栏透明的做法一般是设置windowTranslucentStatus &#x3D; true，这样布局将会忽略状态栏，将内容往上顶，toobar就会和statusbar重叠，因此在放置toolbar的时候需要设置margin，或者在状态栏的位置放置一个View来恢复正常的布局。这样又涉及到了计算statusbar高度的问题。</p>
+<blockquote>
+<p>statusbar的高度为25dp（最新的android 6.0是24dp）</p>
+</blockquote>
+<p>但是在android5.x上如果照搬4.4的解决方案其实并不合理，原因在于TranslucentStatus在5.x以上的表现不同，遮罩层颜色过深，不太符合Material Design的标准。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>经过一番搜索，我在<a href="http://www.zhihu.com/question/31468556">这里</a>找到了可以解决问题的答案。</p>
+<blockquote>
+<p>如果不需要支持 4.4，建议直接使用 statusBarColor</p>
+</blockquote>
+<blockquote>
+<p>如果需要支持 4.4，建议 4.4 使用 windowTranslucentStatus；5.x 使用 statusBarColor&#x2F;colorPrimaryDark</p>
+</blockquote>
+<h4 id="1-添加style"><a href="#1-添加style" class="headerlink" title="1. 添加style"></a>1. 添加style</h4><p>首先在sytle.xml里面定义半透明状态栏。分别新建v19和v21两个style，加入以下style：</p>
+<p>v19</p>
+<pre><code>   &lt;style name=&quot;translucent_status&quot; parent=&quot;AppTheme&quot;&gt;
+        &lt;item name=&quot;android:windowTranslucentStatus&quot;&gt;true&lt;/item&gt;
+   &lt;/style&gt;
+</code></pre>
+<p>v21</p>
+<pre><code>    &lt;style name=&quot;translucent_status&quot; parent=&quot;AppTheme&quot;&gt;
+        &lt;item name=&quot;android:statusBarColor&quot;&gt;#33000000&lt;/item&gt;
+    &lt;/style&gt;
+</code></pre>
+<blockquote>
+<p>注意：因为android4.4以下没有透明状态栏的选项，因此在无修饰符的style.xml里面也要定义一个同名的style保证在低版本下运行不会因为找不到style而崩溃。</p>
+</blockquote>
+<h4 id="2-修改manifest"><a href="#2-修改manifest" class="headerlink" title="2.修改manifest"></a>2.修改manifest</h4><p>在manifest里面定义theme属性。</p>
+<pre><code>android:theme=&quot;@style/translucent_status&quot;
+</code></pre>
+<h4 id="3-修改activity代码"><a href="#3-修改activity代码" class="headerlink" title="3.修改activity代码"></a>3.修改activity代码</h4><p>因为StatusBarColor并不会将布局上移，因此我们需要加上：</p>
+<pre><code>        Window window = getActivity().getWindow();
+
+        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+</code></pre>
+<h4 id="4-修正toolbar位置"><a href="#4-修正toolbar位置" class="headerlink" title="4.修正toolbar位置"></a>4.修正toolbar位置</h4><p>因为布局上移了因此toolbar和statusbar会重叠，如果你是像我一样的懒人，你可以设置margin：</p>
+<p><code>        &lt;item name=&quot;android:layout_marginTop&quot;&gt;@dimen/status_bar_height&lt;/item&gt;</code></p>
+<p>dimens.xml:</p>
+<p><code>    &lt;dimen name=&quot;status_bar_height&quot;&gt;25dp&lt;/dimen&gt;</code></p>
+<p><em>(当然如果为了支持最新的android6.0你可能还需要新建一个v23版本的dimens，设置为24dp)</em></p>
+<p>你也可以选择在java里动态获取statusbar的高度（未验证）：</p>
+<pre><code>public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier(&quot;status_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;);
+        if (resourceId &gt; 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+</code></pre>
+<h4 id="5-添加-fitsSystemWindow-”true”（可选）"><a href="#5-添加-fitsSystemWindow-”true”（可选）" class="headerlink" title="5.添加 fitsSystemWindow&#x3D;”true”（可选）"></a>5.添加 fitsSystemWindow&#x3D;”true”（可选）</h4><p>因为android4.4的方案可能会导致EditText被软键盘挡住，因此如果有用到Edittext则需要在v19版本的布局文件根布局设置 fitsSystemWindow&#x3D;”true”。</p>
+<blockquote>
+<p>需要注意的是，不要同时设置windowTranslucentNavigation，这样会导致上面的方案失效</p>
+</blockquote>
+<p><strong>这就是目前在android4.4以上实现透明状态栏的方案啦，希望能够对大家有帮助！</strong></p>
+<p><strong>下期节目再见。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2015/11/05/cacw-1/">http://microstudent.github.io/2015/11/05/cacw-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/cacw/">cacw</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2015/11/12/cacw-2/" title="CACW开发笔记（二）：自定义View，实现载入动画！——前篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——前篇</div></div><div class="info-2"><div class="info-item-1">为什么要自定义View前几天，当我在写app的登录界面的时候，用到了ProgressDialog这个dialog，虽然android自带了一个ProgressDialog，可是这货在不同平台上的表现不太一样，这对于有一点强迫症的我来说，不太能够接受。加上看了materialup上各种漂亮的动画，于是决定用自定义View的方式来写一个Progress进度条。  这个自定义View现在已经上传到...</div></div></div></a><a class="pagination-related" href="/2015/11/04/Mrakdown/" title="教你怎么使用Markdown在Windows上愉快地写博文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">教你怎么使用Markdown在Windows上愉快地写博文</div></div><div class="info-2"><div class="info-item-1">既然要开始写博文，那么就应该简单介绍一下我写博文所使用的工具啦，首当其冲的就是写博文需要用到的语法。 下面就简单的来介绍Windows下比较好用的工具，还有一些简单的Markdown语法。   一、什么是MarkdownMarkdown是一种轻量级的标记语言，可以很方便的进行排版，通过它，基本可以不使用鼠标就能够插入文本、链接、图片，这些统统用键盘就可以搞定了！很多网站都支持Markdown...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2016/01/12/cacw-3/" title="CACW开发笔记（二）：自定义View，实现载入动画！——后篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-01-12</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——后篇</div></div><div class="info-2"><div class="info-item-1">前言不知不觉过去了好多天，因为前一阵子临近期末，不得不加急复习（不然就要挂科啦），加上后来学校老师给的课程设计，因此拖了好久的坑一直没补上，今天终于打算把这个坑填了，我们的重点依旧放在如何实现前篇提到的那个动画上。废话不多说，开始重点。  本文要点 1.视图动画(Animation类)和属性Property动画(Animator类)的区别 2.插值器(Interpolator)的作用 3.我...</div></div></div></a><a class="pagination-related" href="/2016/05/29/ninekeyquery/" title="实现一个简单的九键拼音匹配算法(比较随性)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-05-29</div><div class="info-item-2">实现一个简单的九键拼音匹配算法(比较随性)</div></div><div class="info-2"><div class="info-item-1">好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：   需求是对拨号窗口的九键进行拼音筛选，需要设计一种算法来筛选条目。应用类似手机的通讯录。 方法给出的queryString为一串数字，通过拨号键盘给出的。也可能掺杂着#*等电话符号。假设User类有getPinyin()和get...</div></div></div></a><a class="pagination-related" href="/2015/11/12/cacw-2/" title="CACW开发笔记（二）：自定义View，实现载入动画！——前篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-11-12</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——前篇</div></div><div class="info-2"><div class="info-item-1">为什么要自定义View前几天，当我在写app的登录界面的时候，用到了ProgressDialog这个dialog，虽然android自带了一个ProgressDialog，可是这货在不同平台上的表现不太一样，这对于有一点强迫症的我来说，不太能够接受。加上看了materialup上各种漂亮的动画，于是决定用自定义View的方式来写一个Progress进度条。  这个自定义View现在已经上传到...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%9D%91%E5%95%A6%EF%BC%81"><span class="toc-number">1.</span> <span class="toc-text">开坑啦！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Material-design%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83%E5%AF%B9%E7%8A%B6%E6%80%81%E6%A0%8F%E7%9A%84%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86"><span class="toc-number">2.</span> <span class="toc-text">Material design设计规范对状态栏的推荐标准</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E7%9A%84%E9%9A%9C%E7%A2%8D"><span class="toc-number">2.1.</span> <span class="toc-text">存在的障碍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0style"><span class="toc-number">3.1.</span> <span class="toc-text">1. 添加style</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9manifest"><span class="toc-number">3.2.</span> <span class="toc-text">2.修改manifest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9activity%E4%BB%A3%E7%A0%81"><span class="toc-number">3.3.</span> <span class="toc-text">3.修改activity代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%BF%AE%E6%AD%A3toolbar%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.4.</span> <span class="toc-text">4.修正toolbar位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%B7%BB%E5%8A%A0-fitsSystemWindow-%E2%80%9Dtrue%E2%80%9D%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">5.添加 fitsSystemWindow&#x3D;”true”（可选）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>实现一个简单的九键拼音匹配算法(比较随性) | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个简单的九键拼音匹配算法(比较随性)">
+<meta property="og:url" content="http://microstudent.github.io/2016/05/29/ninekeyquery/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2016-05-29T12:27:43.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="cacw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "实现一个简单的九键拼音匹配算法(比较随性)",
+  "url": "http://microstudent.github.io/2016/05/29/ninekeyquery/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2016-05-29T12:27:43.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2016/05/29/ninekeyquery/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '实现一个简单的九键拼音匹配算法(比较随性)',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">实现一个简单的九键拼音匹配算法(比较随性)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">实现一个简单的九键拼音匹配算法(比较随性)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-05-29T12:27:43.000Z" title="发表于 2016-05-29 20:27:43">2016-05-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><p>好久没写博文了，因为最近都在忙课设的事情。</p>
+<p>说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：</p>
+<p><img src="https://raw.githubusercontent.com/microstudent/microstudent.github.io1/master/ninekey.gif" alt="image"></p>
+<span id="more"></span>
+<p>需求是对拨号窗口的九键进行拼音筛选，需要设计一种算法来筛选条目。<br>应用类似手机的通讯录。</p>
+<p>方法给出的queryString为一串数字，通过拨号键盘给出的。也可能掺杂着#*等电话符号。<br>假设User类有getPinyin()和getPhone()两个方法，分别得到格式为String[]的拼音和String的电话号码。</p>
+<p>经过一番尝试，我的拼音算法的最终实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">public class NineKeyQuery implements IQuery &#123;</span><br><span class="line">    private static final String[] NINE_KEY_WORD = &#123;&quot;&quot;, &quot;&quot;, &quot;ABC&quot;, &quot;DEF&quot;, &quot;GHI&quot;, &quot;JKL&quot;, &quot;MNO&quot;, &quot;PQRS&quot;, &quot;TUV&quot;, &quot;WXYZ&quot;&#125;;</span><br><span class="line">    private final List&lt;IUser&gt; filteredModelListByNumber = new ArrayList&lt;&gt;();</span><br><span class="line">    private final List&lt;IUser&gt; filteredModelListByName = new ArrayList&lt;&gt;();</span><br><span class="line">    private final Set&lt;IUser&gt; result = new LinkedHashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public List&lt;? extends IUser&gt; filter(List&lt;? extends IUser&gt; data, String queryString) &#123;</span><br><span class="line">        if (queryString.isEmpty()) &#123;</span><br><span class="line">            return data;</span><br><span class="line">        &#125;</span><br><span class="line">        result.clear();</span><br><span class="line">        result.addAll(queryByNumber(data, queryString));</span><br><span class="line">        result.addAll(queryByName(data, queryString));</span><br><span class="line">        return new ArrayList&lt;&gt;(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private List&lt;IUser&gt; queryByName(List&lt;? extends IUser&gt; data, String queryString) &#123;</span><br><span class="line">        filteredModelListByName.clear();</span><br><span class="line">        if (data != null) &#123;</span><br><span class="line">            for(int i = 0; i &lt; data.size();i++)&#123;</span><br><span class="line">                //取出拼音</span><br><span class="line">                String[] pinyin = PinyinUtils.getPinyinString(data.get(i).getName());</span><br><span class="line"></span><br><span class="line">                //分别为当前正在检索的字的index，和该词的pinyin的offset,对每个User分别从第0个的第0位开始查询</span><br><span class="line">                int wordNow = 0, pinyinOffset = 0;</span><br><span class="line">                boolean flag = false;</span><br><span class="line">                for (int n = 0; n &lt; queryString.length(); n++) &#123;</span><br><span class="line">                    char number = queryString.charAt(n);</span><br><span class="line"></span><br><span class="line">                    //对查询语句的每一个字，包括*#等符号</span><br><span class="line">                    String keywords = getKeywords(number);//提取出该数字代表的字母，例如1代表abc</span><br><span class="line">                    if (keywords != null &amp;&amp; !keywords.isEmpty() &amp;&amp; !pinyin[wordNow].isEmpty()) &#123;//合法性检查</span><br><span class="line">                        for (int j = 0; j &lt; keywords.length(); j++) &#123;//对当前的查询语句的某一个字的要素进行检查，只要有匹配的即可进入下一个查询字。</span><br><span class="line">                            //1. 先对wordNow进行合法性检查，如果合法性不合格直接为false退出循环</span><br><span class="line">                            if (wordNow &gt;= pinyin.length) &#123;</span><br><span class="line">                                flag = false;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            //2. 检查当前正在检索的字的offset所在的字母符不符合，符合设Flag为true退出循环</span><br><span class="line">                            if (pinyinOffset &lt; pinyin[wordNow].length() &amp;&amp; pinyin[wordNow].charAt(pinyinOffset) == keywords.charAt(j)) &#123;</span><br><span class="line">                                flag = true;</span><br><span class="line">                                pinyinOffset++;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            //3. 再检查下一个字首字母是否符合要求，如果符合设true退出循环,注意合法性检查</span><br><span class="line">                            if (pinyinOffset != 0 &amp;&amp; wordNow &lt; pinyin.length - 1 &amp;&amp; !pinyin[wordNow + 1].isEmpty() &amp;&amp; pinyin[wordNow + 1].charAt(0) == keywords.charAt(j)) &#123;</span><br><span class="line">                                flag = true;</span><br><span class="line">                                wordNow++;</span><br><span class="line">                                pinyinOffset = 1;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            //4. 如果前面的检查都失败了，继续下一个检查元素</span><br><span class="line">                            flag = false;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    //这里检查flag是否为false，为false直接退出循环，因为已经都不匹配，为true则继续检查</span><br><span class="line">                    if (!flag)</span><br><span class="line">                        break;</span><br><span class="line">                &#125;</span><br><span class="line">                if(flag)</span><br><span class="line">                    filteredModelListByName.add(data.get(i));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return filteredModelListByName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String getKeywords(char number) &#123;</span><br><span class="line">        if (number &lt;= &#x27;9&#x27; &amp;&amp; number &gt;= &#x27;0&#x27;) &#123;</span><br><span class="line">            return NINE_KEY_WORD[number - &#x27;0&#x27;];</span><br><span class="line">        &#125; else return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private List&lt;IUser&gt; queryByNumber(List&lt;? extends IUser&gt; data, String queryString) &#123;</span><br><span class="line">        filteredModelListByNumber.clear();</span><br><span class="line">        if (data != null) &#123;</span><br><span class="line">            for (IUser user : data) &#123;</span><br><span class="line">                if (user.getPhone().contains(queryString)) &#123;</span><br><span class="line">                    filteredModelListByNumber.add(user);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return filteredModelListByNumber;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有兴趣的同学可以去<a href="https://github.com/fivefire/GDUTContacts/blob/master/app/src/main/java/com/fivefire/app/gdutcontacts/widget/dialpad/query/NineKeyQuery.java">这里看看</a>，这是一个最近在做的课设，里面只有那个九键键盘是我做的:)</p>
+<p>之前还做了一个有动画效果的快速滚动条，和三星的滚动条类似，有兴趣也可以去<a href="https://github.com/microstudent/BouncyScroller">这里</a>逛逛！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2016/05/29/ninekeyquery/">http://microstudent.github.io/2016/05/29/ninekeyquery/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/cacw/">cacw</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2016/05/29/translate-1/" title="翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)</div></div><div class="info-2"><div class="info-item-1">refer:http://blog.danlew.net/2014/11/19/styles-on-android/ 我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？   在Android平台上开发了多年之后，我有一些关于如何正确使用style的强烈建议...</div></div></div></a><a class="pagination-related" href="/2016/03/04/java-1/" title="学习笔记（一）之Java强引用、弱引用、虚引用、软引用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">学习笔记（一）之Java强引用、弱引用、虚引用、软引用</div></div><div class="info-2"><div class="info-item-1">前言最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。    什么是强引用其实强引用在我们写Java代码非常常用，例如下面这一句语句就创建了一个强引用： Map&lt;String,String&gt; map = new Hashmap();  上面这个语句的作用是，创建一个Map对象，并且将其强引用至map上，这个引用是如此...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2015/11/05/cacw-1/" title="CACW开发笔记（一）：关于Android4.4以上实现透明状态栏"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-11-05</div><div class="info-item-2">CACW开发笔记（一）：关于Android4.4以上实现透明状态栏</div></div><div class="info-2"><div class="info-item-1">开坑啦！首先简单介绍一下什么是CACW。 CACW是我当前正在开发的一款Android应用的代号，中文名是蚂蚁团队，主要功能是协助各类团队进行团队项目的管理及其任务的分配，主要功能包括任务定时提醒、任务分配、团队项目管理等功能，服务器端采用C++编写程序，android端采用Material design设计风格进行设计。为了记录下我在开发这款应用时踩到的各种坑，我将会在以后不定时的更新这应...</div></div></div></a><a class="pagination-related" href="/2015/11/12/cacw-2/" title="CACW开发笔记（二）：自定义View，实现载入动画！——前篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2015-11-12</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——前篇</div></div><div class="info-2"><div class="info-item-1">为什么要自定义View前几天，当我在写app的登录界面的时候，用到了ProgressDialog这个dialog，虽然android自带了一个ProgressDialog，可是这货在不同平台上的表现不太一样，这对于有一点强迫症的我来说，不太能够接受。加上看了materialup上各种漂亮的动画，于是决定用自定义View的方式来写一个Progress进度条。  这个自定义View现在已经上传到...</div></div></div></a><a class="pagination-related" href="/2016/01/12/cacw-3/" title="CACW开发笔记（二）：自定义View，实现载入动画！——后篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2016-01-12</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——后篇</div></div><div class="info-2"><div class="info-item-1">前言不知不觉过去了好多天，因为前一阵子临近期末，不得不加急复习（不然就要挂科啦），加上后来学校老师给的课程设计，因此拖了好久的坑一直没补上，今天终于打算把这个坑填了，我们的重点依旧放在如何实现前篇提到的那个动画上。废话不多说，开始重点。  本文要点 1.视图动画(Animation类)和属性Property动画(Animator类)的区别 2.插值器(Interpolator)的作用 3.我...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>

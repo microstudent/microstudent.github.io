@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>学习笔记（一）之Java强引用、弱引用、虚引用、软引用 | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记（一）之Java强引用、弱引用、虚引用、软引用">
+<meta property="og:url" content="http://microstudent.github.io/2016/03/04/java-1/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="前言最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2016-03-04T13:48:28.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "学习笔记（一）之Java强引用、弱引用、虚引用、软引用",
+  "url": "http://microstudent.github.io/2016/03/04/java-1/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2016-03-04T13:48:28.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2016/03/04/java-1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '学习笔记（一）之Java强引用、弱引用、虚引用、软引用',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">学习笔记（一）之Java强引用、弱引用、虚引用、软引用</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">学习笔记（一）之Java强引用、弱引用、虚引用、软引用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-03-04T13:48:28.000Z" title="发表于 2016-03-04 21:48:28">2016-03-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="什么是强引用"><a href="#什么是强引用" class="headerlink" title="什么是强引用"></a>什么是强引用</h2><p>其实强引用在我们写Java代码非常常用，例如下面这一句语句就创建了一个强引用：</p>
+<pre><code>Map&lt;String,String&gt; map = new Hashmap();
+</code></pre>
+<p>上面这个语句的作用是，创建一个Map对象，并且将其强引用至map上，这个引用是如此的强，以至于如果你不主动将map的引用设为null，垃圾回收器将不会主动回收这个对象！这个特性可以保证你正在使用的对象不会突然被回收了。</p>
+<p>但是这样的引用是否能够完全满足我们的需求呢？</p>
+<p>想象用以下的代码来实现一个栈：</p>
+<pre><code>public class Stack{
+    private Object[] elements;
+    private int size = 0;
+    private static final int DEFAULT_INIT_COUNT = 10;
+    
+    public Stack(){
+        elements = new Object[DEFAULT_INIT_COUNT];
+    }
+    
+    public void push(Object e){
+        ensureCapacity();
+        elements[size++] = e;
+    }
+    
+    public Object pop(){
+        if(size == 0)
+            throw new EmptyStackException();
+        return elements[--size];
+    }
+    
+    /**
+    *在当前数组存放的数量到达上限时自动拓展长度，以确保存放更多变量.
+    **/
+    private void ensureCapacity(){
+        if(elements.length == size)
+            elements = Array.copyOf(elements,2*size +1);
+    }
+}
+</code></pre>
+<p>这段代码有什么问题？<br>其实里面隐藏着一个内存泄露的问题！<br>可以看到我们在pop出变量的时候是直接在size上进行自减来实现的，但是此时被弹出的对象还被elements这个数组引用着，对于垃圾回收器来说，他不确定我们是否还会在以后会继续用到这个引用，因此即使使用该栈的程序不再使用这些对象，垃圾回收器也不会主动回收这些对象。随着使用时间的不断增加，内存使用量将会不断增长！</p>
+<p>其实修复的方法很简单，我们只需要在pop方法内return前加上一句：</p>
+<pre><code>elements[size] = null;//断开强引用
+</code></pre>
+<p>垃圾回收器就能正常回收这个对象了。<br>这种工作对程序员来说实在是有些繁琐，那么有什么更好的方法呢？<br>这时候Reference对象应该登场了。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>java.lang.ref类库内包含了一组类，为垃圾回收提供了更大的灵活性，如果存在可能会耗尽内存的大对象时，这些类就非常有用。他们分别是SoftReference(软引用)、WeakReference(弱引用)、PhantomReference(虚引用)。与强引用不同的是，他们可以提供给垃圾回收器一定的依据，让垃圾回收器自行决定是否回收这些对象。</p>
+<p>如果你想要持续持有某个对象的引用，希望以后还能访问到该对象，但是也希望垃圾回收器能及时回收他，那么就应该使用Reference对象了。</p>
+<p>SoftReference(软引用)、WeakReference(弱引用)、PhantomReference(虚引用)由强到弱排列，对应着不同的『可及性』。<br>在堆中，对象有强可及对象、软可及对象、弱可及对象、虚可及对象和不可到达对象。应用的强弱顺序是强、软、弱、和虚。对于对象是属于哪种可及的对象，由他的最强的引用决定。<br>例如：</p>
+<pre><code>String abc=new String(&quot;abc&quot;);  //1   
+SoftReference&lt;String&gt; abcSoftRef=new SoftReference&lt;String&gt;(abc);  //2   
+WeakReference&lt;String&gt; abcWeakRef = new WeakReference&lt;String&gt;(abc); //3   
+abc=null; //4   
+abcSoftRef.clear();//5 
+</code></pre>
+<p>在上述语句中，第一行创建了内容为”abc”的对象，并且建立了强引用。在第二行建立了软引用，但是此时仍然是强引用在起作用。第三行建立了弱引用，同样是强引用在起作用。直到第四行，消除了强引用，此时是软引用在起作用，最后一句消去了软引用，此时才是弱引用在起作用。<br>因此在使用Reference对象时一定不能有强引用指向该对象。</p>
+<h4 id="软引用-SoftReference"><a href="#软引用-SoftReference" class="headerlink" title="软引用(SoftReference)"></a>软引用(SoftReference)</h4><p>一般认为软引用是用以实现内存敏感的高速缓存。作为一个仅次于强引用的引用类型，它将一直持续到JVM内存不足时才会被清除，以防止OutOfMemoryError的错误。</p>
+<h4 id="弱引用-WeakReference"><a href="#弱引用-WeakReference" class="headerlink" title="弱引用(WeakReference)"></a>弱引用(WeakReference)</h4><p>他是比软引用更低一级的引用，当gc扫描到一个弱引用引用到的对象时，无论是否存在内存不足的现象，垃圾回收器都会主动回收这个对象。但是由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。</p>
+<h4 id="虚引用-PhantomReference"><a href="#虚引用-PhantomReference" class="headerlink" title="虚引用(PhantomReference)"></a>虚引用(PhantomReference)</h4><p>虚引用顾名思义，就是不存在引用，对虚引用执行get方法获得的始终是null，它的唯一作用就是当其指向的对象被回收之后，自己被加入到引用队列，用作记录该引用指向的对象已被销毁。<br>当一个对象被虚引用时，该对象被回收时将被加入到引用队列，以记录他被回收了，此刻将无法再次复活这个对象，而弱引用在被真正回收之前就会被加入到引用队列中，可以通过一个不规范的析构方法重新复活，从而不能确保对象完全被回收。<br>使用虚引用，上述情况将引刃而解，当一个虚引用加入到引用队列时，你绝对没有办法得到一个销毁了的对象。因为这时候，对象已经从内存中销毁了。因为虚引用不能被用作让其指向的对象重生，所以其对象会在垃圾回收的第一个周期就将被清理掉。</p>
+<h4 id="引用队列-Reference-Queue"><a href="#引用队列-Reference-Queue" class="headerlink" title="引用队列(Reference Queue)"></a>引用队列(Reference Queue)</h4><p>一旦弱引用对象开始返回null，该弱引用指向的对象就被标记成了垃圾。而这个弱引用对象（非其指向的对象）就没有什么用了。通常这时候需要进行一些清理工作。比如WeakHashMap会在这时候移除没用的条目来避免保存无限制增长的没有意义的弱引用。<br>引用队列可以很容易地实现跟踪不需要的引用。当你在构造WeakReference时传入一个ReferenceQueue对象，当该引用指向的对象被标记为垃圾的时候，这个引用对象会自动地加入到引用队列里面。接下来，你就可以在固定的周期，处理传入的引用队列，比如做一些清理工作来处理这些没有用的引用对象。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2016/03/04/java-1/">http://microstudent.github.io/2016/03/04/java-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2016/05/29/ninekeyquery/" title="实现一个简单的九键拼音匹配算法(比较随性)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">实现一个简单的九键拼音匹配算法(比较随性)</div></div><div class="info-2"><div class="info-item-1">好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：   需求是对拨号窗口的九键进行拼音筛选，需要设计一种算法来筛选条目。应用类似手机的通讯录。 方法给出的queryString为一串数字，通过拨号键盘给出的。也可能掺杂着#*等电话符号。假设User类有getPinyin()和get...</div></div></div></a><a class="pagination-related" href="/2016/03/03/hexo/" title="在Github上部署Hexo博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">在Github上部署Hexo博客</div></div><div class="info-2"><div class="info-item-1">为什么从jekyll-now换成hexo事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到2016年5月1号将只支持kramdown引擎，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)     Hexo好处都有啥...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%BA%E5%BC%95%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">什么是强引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">2.1.</span> <span class="toc-text">Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E5%BC%95%E7%94%A8-SoftReference"><span class="toc-number">2.1.1.</span> <span class="toc-text">软引用(SoftReference)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8-WeakReference"><span class="toc-number">2.1.2.</span> <span class="toc-text">弱引用(WeakReference)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E5%BC%95%E7%94%A8-PhantomReference"><span class="toc-number">2.1.3.</span> <span class="toc-text">虚引用(PhantomReference)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E9%98%9F%E5%88%97-Reference-Queue"><span class="toc-number">2.1.4.</span> <span class="toc-text">引用队列(Reference Queue)</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>

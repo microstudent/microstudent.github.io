@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！) | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="refer:http:&#x2F;&#x2F;blog.danlew.net&#x2F;2014&#x2F;11&#x2F;19&#x2F;styles-on-android&#x2F; 我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)">
+<meta property="og:url" content="http://microstudent.github.io/2016/05/29/translate-1/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="refer:http:&#x2F;&#x2F;blog.danlew.net&#x2F;2014&#x2F;11&#x2F;19&#x2F;styles-on-android&#x2F; 我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2016-05-29T13:30:48.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="Android,Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)",
+  "url": "http://microstudent.github.io/2016/05/29/translate-1/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2016-05-29T13:30:48.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2016/05/29/translate-1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">翻译：在Android上正确地使用style来配置你的View（而不陷入抓狂状态）(未完成！)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-05-29T13:30:48.000Z" title="发表于 2016-05-29 21:30:48">2016-05-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><p><em>refer:<a href="http://blog.danlew.net/2014/11/19/styles-on-android/">http://blog.danlew.net/2014/11/19/styles-on-android/</a></em></p>
+<p>我们总是很难在Android上正确的使用Style。始终会有一种潜在的挫败感。代码的结构很容易因此变得一团糟糕。你已经有多少次想要改变某些View的Style时却担心无意中破坏了某些东西？</p>
+<span id="more"></span>
+
+<p>在Android平台上开发了多年之后，我有一些关于如何正确使用style的强烈建议，关于如何使用它们而不让自己抓狂，还有一系列让我保持淡定的细则。</p>
+<p>这篇文章讲的是关于<strong>View</strong>的style，所以请记住，即使Theme使用和Style类似的结构，它们也是不同的东西。或许我有一天会写一片关于<strong>Theme</strong>的文章，但是我还没说服我自己如何使用<strong>Theme</strong>而不抓狂。</p>
+<p>抓稳扶手，老司机要发车了。这是一片长文章。</p>
+<h2 id="何时使用Styles"><a href="#何时使用Styles" class="headerlink" title="何时使用Styles"></a>何时使用Styles</h2><p>第一个我们必须思考的问题是，我们应该在什么时候通过写style而不是直接在View上写属性来自定义一个<strong>View</strong>？</p>
+<p><strong>规则1：当有成倍的View使用完全相同的属性时使用Style</strong></p>
+<p>这条规则能被以下例子完美的体现出来：</p>
+<ul>
+<li>你在写一个计算器，每个按钮都应该看起来是一样的，所以创建一个名为<strong>CalculatorButton</strong>的Style是有意义的。</li>
+<li>你有两个有着不同格式文本的页面，例如header，子header，和text。你可以通过创建<strong>Header</strong>，<strong>SubHeader</strong>，<strong>Text</strong>来统一他们的外观。</li>
+<li>你在你的APP上有着很多缩略图，你想要让他们看起来都都一样，所以应该创建<strong>Thumbnail</strong>这个Style。</li>
+</ul>
+<p>这些例子的共同点在于，这些<strong>View</strong>都不只是相同的属性——<strong>他们在app中扮演着相同的角色</strong>。现在，当你想要调整这些<strong>View</strong>的外观&#x2F;造型，你可以通过编辑style来一次性改变他们。这节约了你的时间和精力，并且让这些<strong>View</strong>保持了一致。</p>
+<hr>
+<p>想要节约更多的工作？使用资源引用(resource references)吧！</p>
+<p><strong>规则2：在style里适当使用references</strong></p>
+<p>你可以这样来定义一个sytle：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;style name=&quot;MyButton&quot;&gt;</span><br><span class="line">    &lt;item name=&quot;android:minWidth&quot;&gt;88dp&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:minHeight&quot;&gt;48dp&lt;/item&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果你希望<strong>minWidth</strong>根据不同的屏幕尺寸而变化时应该怎么做？你可以在每个尺寸的style文件里重复这个style(例如<strong>sw600dp</strong>和<strong>sw900dp</strong>)，但是这样你不得不同样重复<strong>minHeight</strong>这个属性。要是你想要同时改变这两个属性呢？一瞬间你将获得一大堆到处定义好了的<strong>MyButtons</strong>，而且每一个都是重复了其他的属性，这是一次灾难。很容易就会忘记了修改这么多份副本中的其中一份。</p>
+<p>其实style只是一系列属性的别名，如果我们这么定义我们的style会更容易：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;style name=&quot;MyButton&quot;&gt;</span><br><span class="line">    &lt;item name=&quot;android:minWidth&quot;&gt;@dimen/button_min_width&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:minHeight&quot;&gt;@dimen/button_min_height&lt;/item&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>现在你可以根据这个reference来修改一个属性值。去修改一个重复了无数次的layout的属性值无疑是荒谬的。你可以使用dimension来做到这一点，效果在style上完全一样。</p>
+<p>我的意思并不是说你应该<em>总是</em>在style里使用resource references，只是说你应该在你需要成倍修改属性值的时候使用它。</p>
+<p>这不是说有时候有时候你不需要通过资源限定符(resource qualifiers)重复一个style，你可以在最小限度内保持这一点。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2016/05/29/translate-1/">http://microstudent.github.io/2016/05/29/translate-1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2016/06/01/android-tips/" title="Android的小笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Android的小笔记</div></div><div class="info-2"><div class="info-item-1">最近在知乎上关注了这个问题：Android 开发中，有哪些坑需要注意？ 里面有许多Android开发大神所讲的各种小点，对我来说非常有帮助。我在开发过程中有时候也会遇到一些小坑，因此在这里也贴一下。（也许就是自己用错了？（笑:)）   - 自定义View 由于没对Painter设置线条Width，导致在canvas里面drawLine()没有显示效果（也可能是因为屏幕dpi太高？） surf...</div></div></div></a><a class="pagination-related" href="/2016/05/29/ninekeyquery/" title="实现一个简单的九键拼音匹配算法(比较随性)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">实现一个简单的九键拼音匹配算法(比较随性)</div></div><div class="info-2"><div class="info-item-1">好久没写博文了，因为最近都在忙课设的事情。 说起课设，我最近在做的一个APP有一个需求，是做一个类似系统拨号软件的功能，可以实现9键拼音筛选列表。话不多说，看图：   需求是对拨号窗口的九键进行拼音筛选，需要设计一种算法来筛选条目。应用类似手机的通讯录。 方法给出的queryString为一串数字，通过拨号键盘给出的。也可能掺杂着#*等电话符号。假设User类有getPinyin()和get...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8Styles"><span class="toc-number">1.</span> <span class="toc-text">何时使用Styles</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>

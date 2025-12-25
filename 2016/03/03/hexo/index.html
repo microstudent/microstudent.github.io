@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>在Github上部署Hexo博客 | LeavesGeek的博客</title><meta name="author" content="LeavesGeek"><meta name="copyright" content="LeavesGeek"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="为什么从jekyll-now换成hexo事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到2016年5月1号将只支持kramdown引擎，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Github上部署Hexo博客">
+<meta property="og:url" content="http://microstudent.github.io/2016/03/03/hexo/index.html">
+<meta property="og:site_name" content="LeavesGeek的博客">
+<meta property="og:description" content="为什么从jekyll-now换成hexo事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到2016年5月1号将只支持kramdown引擎，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://microstudent.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2016-03-03T14:16:18.000Z">
+<meta property="article:modified_time" content="2025-12-25T15:31:30.820Z">
+<meta property="article:author" content="LeavesGeek">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://microstudent.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "在Github上部署Hexo博客",
+  "url": "http://microstudent.github.io/2016/03/03/hexo/",
+  "image": "http://microstudent.github.io/img/butterfly-icon.png",
+  "datePublished": "2016-03-03T14:16:18.000Z",
+  "dateModified": "2025-12-25T15:31:30.820Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LeavesGeek",
+      "url": "http://microstudent.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://microstudent.github.io/2016/03/03/hexo/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '在Github上部署Hexo博客',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style>#page-header,#footer{display:none!important}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-color: #f7f7f7;"></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LeavesGeek的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">在Github上部署Hexo博客</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">在Github上部署Hexo博客</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-03-03T14:16:18.000Z" title="发表于 2016-03-03 22:16:18">2016-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-25T15:31:30.820Z" title="更新于 2025-12-25 23:31:30">2025-12-25</time></span></div><div class="meta-secondline"></div></div></div><article class="container post-content" id="article-container"><h3 id="为什么从jekyll-now换成hexo"><a href="#为什么从jekyll-now换成hexo" class="headerlink" title="为什么从jekyll-now换成hexo"></a>为什么从<a href="https://github.com/barryclark/jekyll-now">jekyll-now</a>换成<a href="https://hexo.io/">hexo</a></h3><p>事情得从我在几天前收到的邮件说起，Github提示我Github Pages服务即将升级到Jekyll 3.0，而且到<a href="https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0">2016年5月1号将只支持kramdown引擎</a>，所以我按照提示升级之后，发现自己之前发布的文章都出现了#号不能正常渲染的错误，于是我踏上了更换博客框架的漫漫长路。(渲染出错其实是我自己的原因，这是后话~无奈)</p>
+<span id="more"></span>
+
+
+<hr>
+<h3 id="Hexo好处都有啥？"><a href="#Hexo好处都有啥？" class="headerlink" title="Hexo好处都有啥？"></a>Hexo好处都有啥？</h3><p>经过这几天的体验，发现Hexo比之前的jekyll-now有以下的好处：</p>
+<ol>
+<li>有众多主题可供选择（例如你现在看到的这个）</li>
+<li>插件繁多，通过插件可以在开启自己的server，预览效果，也可以通过命令行一次性部署到远端服务器(Github、Heroku等)</li>
+<li>有草稿机制，可以先写草稿再发布出去</li>
+<li>有源源不断的开发者对Hexo更新<br>虽然jekyll-now可以做到快速建站，但是在自定义这方面却完全输给了Hexo。</li>
+</ol>
+<hr>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><p>想要使用Hexo来搭建自己的博客，首先你要安装<a href="https://nodejs.org/en/">Node.js</a>和<a href="http://git-scm.com/">Git</a>，Windows用户建议在官网直接下载安装包进行安装，比较省事。<br>当你安装完这两个东西之后，打开命令行(cmd)输入以下命令安装hexo在你的电脑上。</p>
+<blockquote>
+<p>$ npm install -g hexo-cli</p>
+</blockquote>
+<p>稍等片刻，hexo即安装成功。</p>
+<h3 id="部署到Github"><a href="#部署到Github" class="headerlink" title="部署到Github"></a>部署到Github</h3><p>一旦Hexo安装成功，你就可以在命令行中输入以下命令开始初始化你的博客系统。</p>
+<pre><code> $ hexo init &lt;folder&gt;
+ $ cd &lt;folder&gt;
+ $ npm install
+ 
+</code></pre>
+<p>其中，<folder>替换成你的想要存放的Hexo博客目录。如d:&#x2F;hexo。</p>
+<blockquote>
+<p>如果遇到cd命令无效的问题，可以加强制跳转命令”&#x2F;d”，例如：cd &#x2F;d d:&#x2F;hexo</p>
+</blockquote>
+<blockquote>
+<p>在执行这些命令之前你最好检查系统环境变量Path是否包含了git的主目录。因为init命令依靠的是git的clone实现，如果git在环境变量中没有配置好，将会以复制文件的方式替代。</p>
+</blockquote>
+<blockquote>
+<p>需要说明的是，如果你是使用git的安装包形式安装的，在安装过程中有选项可以选择自动导入环境变量！</p>
+</blockquote>
+<p>在初始化完成后，你将在<folder>目录看到如下的目录结构：</p>
+<blockquote>
+<p>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes</p>
+</blockquote>
+<p>其中，_config.yml是主要的配置文件，在里面可以修改站点的信息。</p>
+<blockquote>
+<p>最好使用Sublime text之类代码编辑器打开这个文件，而不要使用记事本打开，因为记事本可能会加入某些特殊字符导致修改异常</p>
+</blockquote>
+<p>source文件夹存放的是你用markdown存放的博文或者页面，里面有_post(博文)等其他文件夹，还可能有assets\images文件夹，里面存放公共图片资源等。</p>
+<p>theme文件夹则是存放着你的博客主题资源，你可以在<a href="https://hexo.io/themes/">这里</a>找到适合你的主题并应用到你的博客上去！</p>
+<h3 id="config-yml配置说明"><a href="#config-yml配置说明" class="headerlink" title="_config.yml配置说明"></a>_config.yml配置说明</h3><p>直接用文本编辑器打开_config.yml，建议修改以下变量：</p>
+<ul>
+<li>title 你博客的主标题</li>
+<li>subtitle 你博客的副标题</li>
+<li>description 你博客的描述</li>
+<li>author 作者名</li>
+<li>language 使用的语言，简体中文就输入zh-cn</li>
+<li>per_page 一页展示的文章数量，0表示不分页</li>
+<li>theme 博客使用的主题，false表示不使用主题</li>
+<li>deploy 一键部署的属性</li>
+</ul>
+<h3 id="配置一键部署到github"><a href="#配置一键部署到github" class="headerlink" title="配置一键部署到github"></a>配置一键部署到github</h3><p>首先登录github并新建一个新的respository，名字格式为&lt;你的github账户名&gt;.github.io，例如microstudent.github.io，然后复制其SSH形式的clone urls，例如：<a href="mailto:&#x67;&#105;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">git@github.com</a>:microstudent&#x2F;microstudent.github.io.git。</p>
+<p>接着运行命令行，输入</p>
+<pre><code>$ npm install hexo-deployer-git --save
+</code></pre>
+<p>安装hexo-deployer-git，hexo将一键部署组件分解成了许多模块，这是部署到git类服务器的模块。</p>
+<p>在_config.yml，修改deploy属性如下：</p>
+<pre><code>deploy:
+    type: git
+    repo: &lt;repository url&gt;
+    branch: master
+</code></pre>
+<p>其中，&lt; repository url&gt;替换成刚才复制的clone urls。</p>
+<p>然后就是见证奇迹的时刻了。</p>
+<p>在命令行中用cd命令进入hexo的目录，输入</p>
+<pre><code>hexo g -d
+</code></pre>
+<p>这之中包含了两层命令，第一层是hexo generate，生成博客页面，附带一个-d指的是生成后直接部署（hexo deploy<br>），然后打开&lt; yourusername&gt;.github.io，如果没有出现error404就说明部署成功！</p>
+<h3 id="开启本地服务器"><a href="#开启本地服务器" class="headerlink" title="开启本地服务器"></a>开启本地服务器</h3><p>你可以在本地开启一个服务器浏览博客。首先命令行进入hexo的目录，然后输入</p>
+<pre><code>$ hexo server
+</code></pre>
+<p>然后打开浏览器输入：<a href="http://localhost:4000/">http://localhost:4000/</a> 即为博客的效果。</p>
+<h3 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h3><p>你可以在hexo目录下执行</p>
+<pre><code>$ hexo new &lt;title&gt;
+</code></pre>
+<p>创建新文章，&lt; title&gt;替换为文章标题。<br>然后在source&#x2F;_post下找到生成的md文件，在这个文件上即可开始自己的写作！</p>
+<h3 id="一些可能你会遇到的问题"><a href="#一些可能你会遇到的问题" class="headerlink" title="一些可能你会遇到的问题"></a>一些可能你会遇到的问题</h3><ol>
+<li><p>错误1：<br>fatal: Could not read from remote repository.<br>Please make sure you have the correct access rights<br>and the repository exists.<br>除了提示消息本身的原因之外，请检查你安装的Git用的SSH key是否过期或者失效，如果不能确定最好重新生成一个并在github上设置权限。</p>
+</li>
+<li><p>错误2：<br>deploy deployer not found: github<br>3.0后的版本，Hexo需要将type设置成git并且使用<br>$ npm install hexo-deployer-git –save<br>安装对应的插件，才能上传。</p>
+</li>
+<li><p>错误3：<br>deploy deployer not found: git<br>这个文件很可能是因为你没有正确安装好hexo-deployer-git这个模块，建议卸载后使用  $ npm install hexo-deployer-git –save命令重新安装</p>
+</li>
+<li><p>错误4：在部署过程中出现乱码，并且部署失败。<br>很可能因为你的git配置不正确，建议卸载git&#x2F;github for windows后重新安装最新版本，而且最好不要同时安装git和github for windows。</p>
+</li>
+<li><p>错误5：在部署过程中异常报错。<br>请检查你的_config.yml文件是否填写正确，在每个变量后的冒号都要有一个空格，否则会识别错误！同时据说在里面输入中文字符也可能会导致这个问题，不过我尝试了之后并没有出现这个问题，这很可能是编码的问题，使用UTF编码应该就没问题了。</p>
+</li>
+</ol>
+<h3 id="还有问题？"><a href="#还有问题？" class="headerlink" title="还有问题？"></a>还有问题？</h3><p>如果你觉得介绍不够详细，或者是还有很多疑问没有解决，那么你可以登录hexo官网查看相关文档<a href="https://hexo.io/docs/">https://hexo.io/docs/</a>  。部分页面已经有简中版了！</p>
+<h3 id="关于渲染错误的问题"><a href="#关于渲染错误的问题" class="headerlink" title="关于渲染错误的问题"></a>关于渲染错误的问题</h3><p>为什么升级了markdown引擎后网页显示不正确了呢？<br>其实是因为语法有差异。<br>新的markdown引擎要求在标题符号#后加一个空格，否则就不能正常识别成一个标题，o(╯□╰)o。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://microstudent.github.io">LeavesGeek</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://microstudent.github.io/2016/03/03/hexo/">http://microstudent.github.io/2016/03/03/hexo/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://microstudent.github.io" target="_blank">LeavesGeek的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hexo/">hexo</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2016/03/04/java-1/" title="学习笔记（一）之Java强引用、弱引用、虚引用、软引用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">学习笔记（一）之Java强引用、弱引用、虚引用、软引用</div></div><div class="info-2"><div class="info-item-1">前言最近一直在为自己的Java知识充电，看了一些好书，决定把自己读到的觉得有用的知识拿出来分享一下，于是有了这个系列。    什么是强引用其实强引用在我们写Java代码非常常用，例如下面这一句语句就创建了一个强引用： Map&lt;String,String&gt; map = new Hashmap();  上面这个语句的作用是，创建一个Map对象，并且将其强引用至map上，这个引用是如此...</div></div></div></a><a class="pagination-related" href="/2016/01/12/cacw-3/" title="CACW开发笔记（二）：自定义View，实现载入动画！——后篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">CACW开发笔记（二）：自定义View，实现载入动画！——后篇</div></div><div class="info-2"><div class="info-item-1">前言不知不觉过去了好多天，因为前一阵子临近期末，不得不加急复习（不然就要挂科啦），加上后来学校老师给的课程设计，因此拖了好久的坑一直没补上，今天终于打算把这个坑填了，我们的重点依旧放在如何实现前篇提到的那个动画上。废话不多说，开始重点。  本文要点 1.视图动画(Animation类)和属性Property动画(Animator类)的区别 2.插值器(Interpolator)的作用 3.我...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LeavesGeek</div><div class="author-info-description">I love learning.</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%8Ejekyll-now%E6%8D%A2%E6%88%90hexo"><span class="toc-number">1.</span> <span class="toc-text">为什么从jekyll-now换成hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo%E5%A5%BD%E5%A4%84%E9%83%BD%E6%9C%89%E5%95%A5%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">Hexo好处都有啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">安装步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0Github"><span class="toc-number">4.</span> <span class="toc-text">部署到Github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#config-yml%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">5.</span> <span class="toc-text">_config.yml配置说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%88%B0github"><span class="toc-number">6.</span> <span class="toc-text">配置一键部署到github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">开启本地服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E4%BD%9C"><span class="toc-number">8.</span> <span class="toc-text">写作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E4%BD%A0%E4%BC%9A%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">9.</span> <span class="toc-text">一些可能你会遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%98%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">还有问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B8%B2%E6%9F%93%E9%94%99%E8%AF%AF%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">关于渲染错误的问题</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/09/10/android-hack1/" title="一个由SharedPreferences引起的ANR">一个由SharedPreferences引起的ANR</a><time datetime="2018-09-10T12:12:46.000Z" title="发表于 2018-09-10 20:12:46">2018-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/android-performance-optimization-1/" title="Android性能优化之使用AOP结合Systrace查找性能短板">Android性能优化之使用AOP结合Systrace查找性能短板</a><time datetime="2018-08-19T07:45:22.000Z" title="发表于 2018-08-19 15:45:22">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2018/08/19/interview-1/" title="面试记录">面试记录</a><time datetime="2018-08-19T06:36:29.000Z" title="发表于 2018-08-19 14:36:29">2018-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2017/01/07/Glide-And-Picasso/" title="Glide、Picasso性能对比报告">Glide、Picasso性能对比报告</a><time datetime="2017-01-07T12:04:19.000Z" title="发表于 2017-01-07 20:04:19">2017-01-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2016/06/01/android-tips/" title="Android的小笔记">Android的小笔记</a><time datetime="2016-06-01T07:51:05.000Z" title="发表于 2016-06-01 15:51:05">2016-06-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By LeavesGeek</span><span class="framework-info"><span>框架 </span><a href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': '',
+      'data-repo-id': '',
+      'data-category-id': '',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div></div></body></html>
